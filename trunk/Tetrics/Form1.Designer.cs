@@ -50,6 +50,11 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.lblScore = new System.Windows.Forms.Label();
+            this.columnHeader11 = new System.Windows.Forms.ColumnHeader();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label5 = new System.Windows.Forms.Label();
+            this.lblSpeed = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -63,7 +68,7 @@
             this.panel1.BackColor = System.Drawing.SystemColors.ControlText;
             this.panel1.Location = new System.Drawing.Point(40, 50);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(240, 450);
+            this.panel1.Size = new System.Drawing.Size(240, 406);
             this.panel1.TabIndex = 0;
             // 
             // label1
@@ -88,7 +93,9 @@
             // gameToolStripMenuItem
             // 
             this.gameToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.startToolStripMenuItem});
+            this.startToolStripMenuItem,
+            this.toolStripMenuItem1,
+            this.exitToolStripMenuItem});
             this.gameToolStripMenuItem.Name = "gameToolStripMenuItem";
             this.gameToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
             this.gameToolStripMenuItem.Text = "Game";
@@ -96,14 +103,14 @@
             // startToolStripMenuItem
             // 
             this.startToolStripMenuItem.Name = "startToolStripMenuItem";
-            this.startToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.startToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.startToolStripMenuItem.Text = "Start";
             this.startToolStripMenuItem.Click += new System.EventHandler(this.button1_Click);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(296, 82);
+            this.label2.Location = new System.Drawing.Point(296, 72);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(35, 13);
             this.label2.TabIndex = 4;
@@ -121,8 +128,9 @@
             this.columnHeader7,
             this.columnHeader8,
             this.columnHeader9,
-            this.columnHeader10});
-            this.listView1.Location = new System.Drawing.Point(299, 169);
+            this.columnHeader10,
+            this.columnHeader11});
+            this.listView1.Location = new System.Drawing.Point(299, 126);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(343, 330);
             this.listView1.TabIndex = 5;
@@ -182,7 +190,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(433, 50);
+            this.label3.Location = new System.Drawing.Point(296, 97);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(35, 13);
             this.label3.TabIndex = 6;
@@ -191,7 +199,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(428, 84);
+            this.label4.Location = new System.Drawing.Point(386, 50);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(38, 13);
             this.label4.TabIndex = 7;
@@ -200,17 +208,54 @@
             // lblScore
             // 
             this.lblScore.AutoSize = true;
-            this.lblScore.Location = new System.Drawing.Point(496, 82);
+            this.lblScore.Location = new System.Drawing.Point(448, 50);
             this.lblScore.Name = "lblScore";
             this.lblScore.Size = new System.Drawing.Size(13, 13);
             this.lblScore.TabIndex = 8;
             this.lblScore.Text = "0";
             // 
+            // columnHeader11
+            // 
+            this.columnHeader11.Text = "11";
+            this.columnHeader11.Width = 30;
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(149, 6);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(387, 76);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(41, 13);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "Speed:";
+            // 
+            // lblSpeed
+            // 
+            this.lblSpeed.AutoSize = true;
+            this.lblSpeed.Location = new System.Drawing.Point(448, 76);
+            this.lblSpeed.Name = "lblSpeed";
+            this.lblSpeed.Size = new System.Drawing.Size(13, 13);
+            this.lblSpeed.TabIndex = 10;
+            this.lblSpeed.Text = "1";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(686, 526);
+            this.ClientSize = new System.Drawing.Size(686, 485);
+            this.Controls.Add(this.lblSpeed);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.lblScore);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -221,8 +266,10 @@
             this.Controls.Add(this.menuStrip1);
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
+            this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "Teris";
+            this.SizeChanged += new System.EventHandler(this.Form1_SizeChanged);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
@@ -255,6 +302,11 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label lblScore;
+        private System.Windows.Forms.ColumnHeader columnHeader11;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lblSpeed;
     }
 }
 

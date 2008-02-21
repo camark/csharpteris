@@ -17,7 +17,9 @@ namespace Tetrics
         private int GamePanel_top = 50;
         private int xcount = 10;
         private int ycount = 20;
+        private int _GameSpeed = 1;
         private int score = 0;
+        private bool _isGameOver = false;
         private SpriteFactory fct = new SpriteFactory();
         private Sprite _sprite = null;
         private int[,] tiles = null;
@@ -79,7 +81,7 @@ namespace Tetrics
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if (_isStart)
+            if (_isStart && !_isGameOver)
             {
                 //_sprite.Hide(Graphics.FromHwnd(panel1.Handle));
                 SpriteDown();
@@ -275,6 +277,13 @@ namespace Tetrics
                 }
             }
 
+            int topLine = GetTopLine();
+
+            if (topLine == 1)
+            {
+                MessageBox.Show("Game Over!", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                _isGameOver = true;
+            }
             ShowData();
         }
 
@@ -351,6 +360,14 @@ namespace Tetrics
                 score += GetScoreFromLine(lines);
                 lblScore.Text = score.ToString();
                 DrawPanelTitle();
+
+                int LevelScore = 500;
+                if (score >= LevelScore)
+                {
+                    _GameSpeed += score / LevelScore;
+                    lblSpeed.Text = _GameSpeed.ToString();
+                    timer1.Interval = 500 - _GameSpeed * 50;
+                }
                 ShowData();
             }
         }
@@ -425,14 +442,14 @@ namespace Tetrics
         private void ShowData()
         {
             listView1.Items.Clear();
-            for (int i = 1; i < 21; i++)
+            for (int i = 1; i < 22; i++)
             {
                 ListViewItem item = new ListViewItem();
                 if (tiles[i, 0] == 1)
                     item.Text = "1";
                 else
                     item.Text = "0";
-                for (int j = 1; j < 11; j++)
+                for (int j = 1; j < 12; j++)
                 {
                     if (tiles[i, j] == 1)
                         item.SubItems.Add("1");
@@ -443,6 +460,19 @@ namespace Tetrics
                 listView1.Items.Add(item);
             }
             label3.Text = GetTopLine().ToString();
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void Form1_SizeChanged(object sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Minimized)
+            {
+                timer1.Enabled = false;
+            }
         }
     }
 }
