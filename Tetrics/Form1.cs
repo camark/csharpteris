@@ -361,7 +361,7 @@ namespace Tetrics
                 lblScore.Text = score.ToString();
                 DrawPanelTitle();
 
-                int LevelScore = 500;
+                int LevelScore = 5000;
                 if (score >= LevelScore)
                 {
                     _GameSpeed += score / LevelScore;
