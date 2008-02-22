@@ -23,30 +23,30 @@ namespace Tetrics
         private SpriteFactory fct = new SpriteFactory();
         private Sprite _sprite = null;
         private int[,] tiles = null;
-            //{
-            //    {1,1,1,1,1,1,1,1,1,1,1,1},
-            //    {1,0,0,0,0,0,0,0,0,0,0,1},
-            //    {1,0,0,0,0,0,0,0,0,0,0,1},
-            //    {1,0,0,0,0,0,0,0,0,0,0,1},
-            //    {1,0,0,0,0,0,0,0,0,0,0,1},
-            //    {1,0,0,0,0,0,0,0,0,0,0,1},
-            //    {1,0,0,0,0,0,0,0,0,0,0,1},
-            //    {1,0,0,0,0,0,0,0,0,0,0,1},
-            //    {1,0,0,0,0,0,0,0,0,0,0,1},
-            //    {1,0,0,0,0,0,0,0,0,0,0,1},
-            //    {1,0,0,0,0,0,0,0,0,0,0,1},
-            //    {1,0,0,0,0,0,0,0,0,0,0,1},
-            //    {1,0,0,0,0,0,0,0,0,0,0,1},
-            //    {1,0,0,0,0,0,0,0,0,0,0,1},
-            //    {1,0,0,0,0,0,0,0,0,0,0,1},
-            //    {1,0,0,0,0,0,0,0,0,0,0,1},
-            //    {1,0,0,0,0,0,0,0,0,0,0,1},
-            //    {1,0,0,0,0,0,0,0,0,0,0,1},
-            //    {1,0,0,0,0,0,0,0,0,0,0,1},
-            //    {1,0,0,0,0,0,0,0,0,0,0,1},
-            //    {1,0,0,0,0,0,0,0,0,0,0,1},
-            //    {1,1,1,1,1,1,1,1,1,1,1,1}
-            //};
+        //{
+        //    {1,1,1,1,1,1,1,1,1,1,1,1},
+        //    {1,0,0,0,0,0,0,0,0,0,0,1},
+        //    {1,0,0,0,0,0,0,0,0,0,0,1},
+        //    {1,0,0,0,0,0,0,0,0,0,0,1},
+        //    {1,0,0,0,0,0,0,0,0,0,0,1},
+        //    {1,0,0,0,0,0,0,0,0,0,0,1},
+        //    {1,0,0,0,0,0,0,0,0,0,0,1},
+        //    {1,0,0,0,0,0,0,0,0,0,0,1},
+        //    {1,0,0,0,0,0,0,0,0,0,0,1},
+        //    {1,0,0,0,0,0,0,0,0,0,0,1},
+        //    {1,0,0,0,0,0,0,0,0,0,0,1},
+        //    {1,0,0,0,0,0,0,0,0,0,0,1},
+        //    {1,0,0,0,0,0,0,0,0,0,0,1},
+        //    {1,0,0,0,0,0,0,0,0,0,0,1},
+        //    {1,0,0,0,0,0,0,0,0,0,0,1},
+        //    {1,0,0,0,0,0,0,0,0,0,0,1},
+        //    {1,0,0,0,0,0,0,0,0,0,0,1},
+        //    {1,0,0,0,0,0,0,0,0,0,0,1},
+        //    {1,0,0,0,0,0,0,0,0,0,0,1},
+        //    {1,0,0,0,0,0,0,0,0,0,0,1},
+        //    {1,0,0,0,0,0,0,0,0,0,0,1},
+        //    {1,1,1,1,1,1,1,1,1,1,1,1}
+        //};
         public Form1()
         {
             InitializeComponent();
@@ -55,8 +55,9 @@ namespace Tetrics
 
         private void button1_Click(object sender, EventArgs e)
         {
-            _isStart = !_isStart;
+            _isStart = true;
 
+            InitGameBoard();
             timer1.Enabled = _isStart;
             if (_sprite == null)
             {
@@ -133,6 +134,9 @@ namespace Tetrics
             }
         }
 
+        /// <summary>
+        /// ·½¿éÏÂÂä
+        /// </summary>
         private void SpriteDown()
         {
             //Sprite _tempSprite = _sprite.Clone();
@@ -155,9 +159,29 @@ namespace Tetrics
                 _sprite.graphics = Graphics.FromHwnd(panel1.Handle);
             }
         }
+
+        private void SpriteVertDown()
+        {
+            int i = 1;
+
+            _sprite.Hide();
+            while (!coolate(_sprite.X, _sprite.Y + i, _sprite))
+            {
+                i++;
+            }
+
+            _sprite.Y += i-1;
+            _sprite.Draw();
+            Combine(_sprite);
+            count();
+            _sprite = null;
+            _sprite = fct.nextSprite;
+            _sprite.graphics = Graphics.FromHwnd(panel1.Handle);
+        }
+
         private void DispatchKey(KeyEventArgs e)
         {
-            if (_isStart)
+            if (_isStart && !_isGameOver)
             {
                 switch (e.KeyCode)
                 {
@@ -169,6 +193,9 @@ namespace Tetrics
                         break;
                     case Keys.Up:
                         SpriteRotate();
+                        break;
+                    case Keys.Down:
+                        SpriteVertDown();
                         break;
                     case Keys.A:
                         SpriteLeft();
@@ -191,7 +218,7 @@ namespace Tetrics
 
 
 
-        
+
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -199,18 +226,18 @@ namespace Tetrics
 
             panel1.Location = new System.Drawing.Point(GamePanel_left, GamePanel_top);
 
-            panel1.Size = new Size(teris_width * xcount, (teris_height-1) * ycount);
+            panel1.Size = new Size(teris_width * xcount, (teris_height - 1) * ycount);
         }
 
         private void InitGameBoard()
         {
-            tiles = new int[ycount+2, xcount+2];
-            for (int i = 0; i < xcount+1; i++)
+            tiles = new int[ycount + 2, xcount + 2];
+            for (int i = 0; i < xcount + 1; i++)
             {
                 tiles[0, i] = 1;
-                tiles[ycount+1, i] = 1;
+                tiles[ycount + 1, i] = 1;
             }
-            for (int i = 1; i < ycount+1; i++)
+            for (int i = 1; i < ycount + 1; i++)
             {
                 tiles[i, 0] = 1;
                 tiles[i, 11] = 1;
@@ -218,6 +245,15 @@ namespace Tetrics
             for (int i = 1; i < ycount; i++)
                 for (int j = 1; j < xcount; j++)
                     tiles[i, j] = 0;
+
+            _GameSpeed = 1;
+            score = 0;
+            //_isStart = false;
+            _isGameOver = false;
+
+            lblScore.Text = score.ToString();
+            lblSpeed.Text = _GameSpeed.ToString();
+            panel1.Invalidate();
         }
 
         /// <summary>
@@ -239,7 +275,7 @@ namespace Tetrics
 
             return false;
         }
-        
+
         /// <summary>
         /// ¼ì²éÅö×²-2
         /// </summary>
@@ -252,7 +288,7 @@ namespace Tetrics
             for (int i = 0; i < 4; i++)
                 for (int j = 0; j < 4; j++)
                 {
-                    if (sprite.tiles[i, j] == 1 && tiles[y + j+1, x + i+1] == 1)
+                    if (sprite.tiles[i, j] == 1 && tiles[y + j + 1, x + i + 1] == 1)
                         return true;
                 }
 
@@ -264,13 +300,13 @@ namespace Tetrics
         /// </summary>
         private void Combine(Sprite sprite)
         {
-            for (int i = 0; i <4; i++)
+            for (int i = 0; i < 4; i++)
             {
-                for (int j = 0; j <4; j++)
+                for (int j = 0; j < 4; j++)
                 {
                     int x = sprite.X + i + 1;
                     int y = sprite.Y + j + 1;
-                    if (sprite.tiles[i, j] == 1 && x<xcount+2 && y<ycount+2)
+                    if (sprite.tiles[i, j] == 1 && x < xcount + 2 && y < ycount + 2)
                     {
                         tiles[y, x] = 1;
                     }
@@ -281,6 +317,7 @@ namespace Tetrics
 
             if (topLine == 1)
             {
+                timer1.Enabled = false;
                 MessageBox.Show("Game Over!", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 _isGameOver = true;
             }
@@ -378,7 +415,7 @@ namespace Tetrics
             switch (lines)
             {
                 case 1:
-                    score=100;
+                    score = 100;
                     break;
                 case 2:
                     score = 300;
@@ -405,8 +442,8 @@ namespace Tetrics
                 {
                     if (tiles[i, j] == 1)
                     {
-                        Rectangle rect = new Rectangle((j-1) * teris_width, (i-2) * teris_height, teris_width, teris_height);
-                        g.FillRectangle(new SolidBrush(Color.GreenYellow),rect);
+                        Rectangle rect = new Rectangle((j - 1) * teris_width, (i - 2) * teris_height, teris_width, teris_height);
+                        g.FillRectangle(new SolidBrush(Color.GreenYellow), rect);
                     }
                 }
             }
@@ -432,7 +469,7 @@ namespace Tetrics
                     {
                         topLine--;
                         break;
-                    }                    
+                    }
                 }
             }
 
@@ -472,6 +509,37 @@ namespace Tetrics
             if (WindowState == FormWindowState.Minimized)
             {
                 timer1.Enabled = false;
+            }
+            else
+                if (WindowState == FormWindowState.Normal)
+                {
+                    if (_isStart && !_isGameOver)
+                        timer1.Enabled = true;
+                }
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            for(int i=1;i<21;i++)
+                for (int j = 1; j < 11; j++)
+                {
+                    Rectangle rect = new Rectangle((j - 1) * teris_width, (i - 2) * teris_height, teris_width, teris_height);
+                    if (tiles[i, j] == 1)
+                    {
+
+                        g.FillRectangle(new SolidBrush(Color.GreenYellow), rect);
+                    }
+                    else
+                    {
+                        g.FillRectangle(new SolidBrush(Color.Black), rect);
+                    }
+                }
+
+            if (_sprite != null)
+            {
+                //_sprite.graphics = g;
+                _sprite.Draw();
             }
         }
     }
